@@ -16,6 +16,10 @@
 
 using System.Diagnostics;
 using System.Reflection;
+using Grpc.Core;
+#if NETSTANDARD2_1 || NET6_0_OR_GREATER
+using Grpc.Net.Client;
+#endif
 #if NETFRAMEWORK
 using System.Net.Http;
 #endif
@@ -189,6 +193,12 @@ namespace OpenTelemetry.Exporter
         /// </list>
         /// </remarks>
         public Func<HttpClient> HttpClientFactory { get; set; }
+
+#if NETSTANDARD2_1 || NET6_0_OR_GREATER
+        public Action<GrpcChannel> ChannelCreated { get; set; }
+#else
+        public Action<Channel> ChannelCreated { get; set; }
+#endif
 
         /// <summary>
         /// Gets a value indicating whether <see cref="Endpoint" /> was modified via its setter.

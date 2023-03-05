@@ -43,7 +43,9 @@ namespace OpenTelemetry.Exporter
             }
 
 #if NETSTANDARD2_1 || NET6_0_OR_GREATER
-            return GrpcChannel.ForAddress(options.Endpoint);
+            GrpcChannel channel = GrpcChannel.ForAddress(options.Endpoint);
+            options.ChannelCreated?.Invoke(channel);
+            return channel;
 #else
             ChannelCredentials channelCredentials;
             if (options.Endpoint.Scheme == Uri.UriSchemeHttps)
@@ -54,8 +56,9 @@ namespace OpenTelemetry.Exporter
             {
                 channelCredentials = ChannelCredentials.Insecure;
             }
-
-            return new Channel(options.Endpoint.Authority, channelCredentials);
+            Channel channel = new Channel(options.Endpoint.Authority, channelCredentials);
+            options.ChannelCreated?.Invoke(channel);
+            return channel;
 #endif
         }
 
