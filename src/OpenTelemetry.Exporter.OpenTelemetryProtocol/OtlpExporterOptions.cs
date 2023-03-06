@@ -196,6 +196,7 @@ namespace OpenTelemetry.Exporter
 
 #if NETSTANDARD2_1 || NET6_0_OR_GREATER
         public Action<GrpcChannel> ChannelCreated { get; set; }
+        public GrpcChannelOptions GrpcChannelOptions { get; set; }
 #else
         public Action<Channel> ChannelCreated { get; set; }
 #endif

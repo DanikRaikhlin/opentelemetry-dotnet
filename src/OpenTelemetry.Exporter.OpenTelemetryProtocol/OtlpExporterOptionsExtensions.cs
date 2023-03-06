@@ -43,7 +43,7 @@ namespace OpenTelemetry.Exporter
             }
 
 #if NETSTANDARD2_1 || NET6_0_OR_GREATER
-            GrpcChannel channel = GrpcChannel.ForAddress(options.Endpoint);
+            GrpcChannel channel = GrpcChannel.ForAddress(options.Endpoint, options.GrpcChannelOptions ?? new GrpcChannelOptions());
             options.ChannelCreated?.Invoke(channel);
             return channel;
 #else
